@@ -285,6 +285,8 @@
     .funnel-arrow {
       color: var(--accent); font-size: 20px; flex-shrink: 0;
     }
+    .arrow-mobile { display: none; }
+    .arrow-desktop { display: inline; }
     .funnel-output {
       background: rgba(59,130,246,.08);
       border: 1px solid rgba(59,130,246,.3);
@@ -594,6 +596,9 @@
       .funnel             { gap: 8px; }
       .funnel-sources     { gap: 6px; display: grid; grid-template-columns: 1fr 1fr; }
       .funnel-box         { justify-content: center; }
+      .arrow-mobile       { display: inline; }
+      .arrow-desktop      { display: none; }
+      .funnel             { flex-direction: column; align-items: center; }
       .funnel-box         { padding: 8px 10px; }
       .section            { padding: 64px 0; }
       .icp-box            { padding: 28px 20px; }
@@ -753,7 +758,7 @@
       </div>
 
       <!-- Arrow -->
-      <div class="funnel-arrow">→</div>
+      <div class="funnel-arrow"><span class="arrow-desktop">→</span><span class="arrow-mobile">↓</span></div>
 
       <!-- Single output -->
       <div class="funnel-output">
