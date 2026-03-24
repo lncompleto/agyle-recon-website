@@ -579,9 +579,12 @@
     }
 
     @media (max-width: 640px) {
-      .stat-bar           { flex-direction: column; border-radius: 12px; }
-      .stat               { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat:last-child    { border-bottom: none; }
+      .stat-bar           { flex-wrap: wrap; border-radius: 12px; }
+      .stat               { flex: 1 1 40%; padding: 16px 10px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+      .stat:nth-child(even) { border-right: none; }
+      .stat:nth-last-child(-n+2) { border-bottom: none; }
+      .stat .value        { font-size: 1.4rem; }
+      .stat .desc         { font-size: 11px; }
       .nav-links          { display: none; }
       h1                  { font-size: 2rem; }
       .pain-grid          { grid-template-columns: 1fr; }
