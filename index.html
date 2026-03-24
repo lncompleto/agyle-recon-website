@@ -384,10 +384,12 @@
     .step-number {
       position: absolute; top: 24px; right: 24px;
       font-size: 48px; font-weight: 900;
-      color: rgba(59,130,246,.06);
+      color: rgba(59,130,246,.12);
       line-height: 1;
       pointer-events: none;
     }
+    html.light .step-number { color: rgba(37,99,235,.2); }
+    .step-left { display: none; } /* hidden on desktop, shown on mobile via media query */
     .step .icon { font-size: 32px; margin-bottom: 20px; display: block; }
     .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
     .step p  { font-size: 14px; color: var(--muted); }
@@ -620,11 +622,13 @@
     @media (max-width: 768px) {
       .pain-grid          { grid-template-columns: repeat(2, 1fr); }
       .steps              { grid-template-columns: 1fr; gap: 10px; margin-top: 24px; }
-      .step               { padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; }
-      .step .icon         { font-size: 22px; margin-bottom: 0; flex-shrink: 0; }
+      .step               { padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+      .step-left          { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; width: 40px; }
+      .step > .step-number:first-child { display: none; } /* hide absolute number on mobile */
+      .step .icon         { font-size: 24px; margin-bottom: 0; display: block; }
+      .step-number        { position: static; font-size: 13px; font-weight: 800; color: var(--accent) !important; opacity: 1; }
       .step h3            { font-size: 14px; margin-bottom: 4px; }
       .step p             { font-size: 12px; }
-      .step-number        { font-size: 28px; top: 10px; right: 12px; }
       .features-grid      {
         display: flex;
         overflow-x: auto;
@@ -638,8 +642,8 @@
       .features-grid::-webkit-scrollbar { display: none; }
       .feature            {
         scroll-snap-align: start;
-        flex: 0 0 78vw;
-        padding: 20px;
+        flex: 0 0 calc(50% - 6px);
+        padding: 16px;
       }
       .carousel-dots      { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
       .carousel-dot       {
@@ -1024,21 +1028,18 @@
     <div class="steps">
       <div class="step">
         <div class="step-number">01</div>
-        <span class="icon">📤</span>
-        <h3>Export your data</h3>
-        <p>Download your order exports from Shopify, Shopee, Lazada, and TikTok — exactly like you do today. No API keys, no integrations, no setup.</p>
+        <div class="step-left"><span class="icon">📤</span><div class="step-number">01</div></div>
+        <div><h3>Export your data</h3><p>Download your order exports from Shopify, Shopee, Lazada, and TikTok — exactly like you do today. No API keys, no integrations, no setup.</p></div>
       </div>
       <div class="step">
         <div class="step-number">02</div>
-        <span class="icon">⚙️</span>
-        <h3>We reconcile &amp; clean</h3>
-        <p>Agyle Recon standardizes every format, reconciles discrepancies across channels, removes duplicates, and builds a single source of truth.</p>
+        <div class="step-left"><span class="icon">⚙️</span><div class="step-number">02</div></div>
+        <div><h3>We reconcile &amp; clean</h3><p>Agyle Recon standardizes every format, reconciles discrepancies across channels, removes duplicates, and builds a single source of truth.</p></div>
       </div>
       <div class="step">
         <div class="step-number">03</div>
-        <span class="icon">📊</span>
-        <h3>Get decision-ready reports</h3>
-        <p>A unified visual dashboard shows you real revenue, real margins, and real performance — broken down by channel, SKU, and period. Act with confidence.</p>
+        <div class="step-left"><span class="icon">📊</span><div class="step-number">03</div></div>
+        <div><h3>Get decision-ready reports</h3><p>A unified visual dashboard shows you real revenue, real margins, and real performance — broken down by channel, SKU, and period. Act with confidence.</p></div>
       </div>
     </div>
   </div>
