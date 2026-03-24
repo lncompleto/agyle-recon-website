@@ -625,11 +625,28 @@
       .step h3            { font-size: 13px; margin-bottom: 6px; }
       .step p             { font-size: 11px; }
       .step-number        { font-size: 28px; top: 10px; right: 10px; }
-      .features-grid      { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .feature            { padding: 16px; gap: 12px; }
-      .feature-icon       { font-size: 20px; }
-      .feature h3         { font-size: 13px; margin-bottom: 4px; }
-      .feature p          { font-size: 11px; }
+      .features-grid      {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 12px;
+        padding-bottom: 16px;
+        margin-top: 32px;
+        scrollbar-width: none;
+      }
+      .features-grid::-webkit-scrollbar { display: none; }
+      .feature            {
+        scroll-snap-align: start;
+        flex: 0 0 78vw;
+        padding: 20px;
+      }
+      .carousel-dots      { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+      .carousel-dot       {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--border); transition: background .2s;
+      }
+      .carousel-dot.active { background: var(--accent); }
       .dashboard          { zoom: 0.52; }
       .audit-card         { padding: 36px 24px; }
       .form-input         { width: 100%; }
@@ -1108,6 +1125,7 @@
         </div>
       </div>
     </div>
+    <div class="carousel-dots" id="featureDots"></div>
   </div>
 </section>
 
@@ -1282,6 +1300,33 @@
     btn.disabled = true;
     e.target.querySelectorAll('input').forEach(i => i.disabled = true);
   }
+
+  // ── Features carousel dots ────────────────────────────────
+  function initCarousel() {
+    const grid = document.querySelector('.features-grid');
+    const dotsEl = document.getElementById('featureDots');
+    if (!grid || !dotsEl) return;
+
+    const cards = grid.querySelectorAll('.feature');
+    if (window.innerWidth > 640 || cards.length === 0) { dotsEl.style.display = 'none'; return; }
+
+    dotsEl.style.display = 'flex';
+    dotsEl.innerHTML = '';
+    cards.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => { cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }); };
+      dotsEl.appendChild(d);
+    });
+
+    grid.addEventListener('scroll', () => {
+      const idx = Math.round(grid.scrollLeft / grid.offsetWidth);
+      dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, { passive: true });
+  }
+
+  initCarousel();
+  window.addEventListener('resize', initCarousel);
 
   // ── Theme toggle ──────────────────────────────────────────
   const toggle = document.getElementById('themeToggle');
