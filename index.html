@@ -619,8 +619,17 @@
     .stat .desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
     @media (max-width: 768px) {
       .pain-grid          { grid-template-columns: repeat(2, 1fr); }
-      .steps              { grid-template-columns: 1fr; }
-      .features-grid      { grid-template-columns: 1fr; }
+      .steps              { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 28px; }
+      .step               { padding: 16px 12px; }
+      .step .icon         { font-size: 22px; margin-bottom: 10px; }
+      .step h3            { font-size: 13px; margin-bottom: 6px; }
+      .step p             { font-size: 11px; }
+      .step-number        { font-size: 28px; top: 10px; right: 10px; }
+      .features-grid      { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .feature            { padding: 16px; gap: 12px; }
+      .feature-icon       { font-size: 20px; }
+      .feature h3         { font-size: 13px; margin-bottom: 4px; }
+      .feature p          { font-size: 11px; }
       .dashboard          { zoom: 0.52; }
       .audit-card         { padding: 36px 24px; }
       .form-input         { width: 100%; }
