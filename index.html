@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agyle Recon — One Source of Truth for Your eCommerce Revenue</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0c0f;
+      --bg2:       #111418;
+      --bg3:       #181d24;
+      --border:    #1e2530;
+      --accent:    #3b82f6;
+      --accent2:   #60a5fa;
+      --danger:    #ef4444;
+      --green:     #22c55e;
+      --yellow:    #f59e0b;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --card:      #131820;
+      --nav-bg:    rgba(10,12,15,.92);
+    }
+
+    html.light {
+      --bg:        #f8fafc;
+      --bg2:       #f1f5f9;
+      --bg3:       #e2e8f0;
+      --border:    #cbd5e1;
+      --accent:    #2563eb;
+      --accent2:   #1d4ed8;
+      --danger:    #dc2626;
+      --green:     #16a34a;
+      --yellow:    #d97706;
+      --text:      #0f172a;
+      --muted:     #64748b;
+      --card:      #ffffff;
+      --nav-bg:    rgba(248,250,252,.94);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* ── Theme transition ─────────────────────────────────── */
+    *, *::before, *::after {
+      transition: background-color .25s, border-color .25s, color .15s;
+    }
+
+    /* ── Theme toggle button ──────────────────────────────── */
+    .theme-toggle {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      transition: border-color .2s, background .2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Typography helpers ───────────────────────────────── */
+    .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .label.red  { color: var(--danger); }
+    .label.green { color: var(--green); }
+    .label.yellow { color: var(--yellow); }
+
+    /* ── Layout ───────────────────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+
+    /* ── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      transition: background .3s;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 17px; letter-spacing: -.01em;
+    }
+    .nav-logo .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      font-size: 14px; color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 14px; font-weight: 600;
+      transition: opacity .2s;
+      cursor: pointer;
+      border: none;
+    }
+    .nav-cta:hover { opacity: .85; }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    #hero {
+      padding: 160px 0 96px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background-image: radial-gradient(circle, rgba(99,130,200,.18) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    /* Blue center glow */
+    #hero::before {
+      content: '';
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 700px;
+      background: radial-gradient(ellipse at center,
+        rgba(59,130,246,.18) 0%,
+        rgba(99,102,241,.08) 40%,
+        transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Floating orbs */
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 320px 260px at 15% 60%, rgba(59,130,246,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 260px 200px at 85% 30%, rgba(139,92,246,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 160px at 70% 80%, rgba(34,197,94,.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    #hero .container { position: relative; z-index: 1; }
+    /* Light mode */
+    html.light #hero {
+      background-image: radial-gradient(circle, rgba(59,130,246,.3) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    html.light #hero::before {
+      background: radial-gradient(ellipse at center,
+        rgba(59,130,246,.18) 0%,
+        rgba(99,102,241,.1) 40%,
+        transparent 70%);
+    }
+    html.light #hero::after {
+      background:
+        radial-gradient(ellipse 320px 260px at 15% 60%, rgba(59,130,246,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 260px 200px at 85% 30%, rgba(139,92,246,.1) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 160px at 70% 80%, rgba(34,197,94,.08) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(59,130,246,.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px; font-weight: 600; color: var(--accent2);
+      margin-bottom: 32px;
+    }
+    .hero-badge .pulse {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .6; transform: scale(.8); }
+    }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    h1 .red { color: var(--danger); }
+    .hero-sub {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--muted);
+      max-width: 560px; margin: 0 auto 40px;
+      font-weight: 400;
+    }
+    .hero-ctas {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      border: none; cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-primary:hover { opacity: .88; transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px; font-weight: 600;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: border-color .2s, transform .15s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+    /* ── PLATFORM LOGOS ───────────────────────────────────── */
+    .platforms {
+      margin-top: 72px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .platforms p { font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+    .platform-chips {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    }
+    .chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 600; color: var(--text);
+    }
+    .chip-icon { font-size: 16px; }
+
+    /* ── CHANNEL FUNNEL ───────────────────────────────────── */
+    /* Compact horizontal funnel */
+    .funnel {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin-top: 48px; flex-wrap: wrap;
+    }
+    .funnel-sources {
+      display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap; justify-content: center;
+    }
+    .funnel-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .funnel-box .logo { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
+    .funnel-box .name { font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+    .channel-name img  { width: 18px; height: 18px; object-fit: contain; vertical-align: middle; margin-right: 6px; }
+    .lazada-wrap {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .lazada-wrap.lg { width: 22px; height: 22px; }
+    .lazada-wrap.sm { width: 18px; height: 18px; vertical-align: middle; margin-right: 6px; }
+    .lazada-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .funnel-arrow {
+      color: var(--accent); font-size: 20px; flex-shrink: 0;
+    }
+    .funnel-output {
+      background: rgba(59,130,246,.08);
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 12px;
+      padding: 10px 18px;
+      display: flex; align-items: center; gap: 10px;
+      white-space: nowrap;
+    }
+    .funnel-output .icon { font-size: 22px; }
+    .funnel-output .name { font-size: 13px; font-weight: 700; color: var(--accent2); }
+    .funnel-output .sub  { display: none; }
+
+    /* ── PAIN SECTION ─────────────────────────────────────── */
+    #pain { background: var(--bg2); }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .pain-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    .pain-card .icon {
+      font-size: 28px; margin-bottom: 16px;
+    }
+    .pain-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .pain-card p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ── HOW IT WORKS ─────────────────────────────────────── */
+    #how { background: var(--bg); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      position: relative;
+    }
+    .step-number {
+      position: absolute; top: 24px; right: 24px;
+      font-size: 48px; font-weight: 900;
+      color: rgba(59,130,246,.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .step .icon { font-size: 32px; margin-bottom: 20px; display: block; }
+    .step h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+    .step p  { font-size: 14px; color: var(--muted); }
+
+    /* ── FEATURES ─────────────────────────────────────────── */
+    #features { background: var(--bg2); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex; gap: 18px;
+    }
+    .feature-icon {
+      font-size: 28px; flex-shrink: 0;
+    }
+    .feature h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .feature p  { font-size: 13px; color: var(--muted); }
+
+    /* ── DIFFERENTIATOR ───────────────────────────────────── */
+    #diff { background: var(--bg); }
+    .diff-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+    @media (max-width: 640px) { .diff-inner { grid-template-columns: 1fr; } }
+    .diff-col {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+    }
+    .diff-col.good { border-color: rgba(34,197,94,.25); }
+    .diff-col.bad  { border-color: rgba(239,68,68,.2); }
+    .diff-col h3 {
+      font-size: 16px; font-weight: 700; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .diff-col ul { list-style: none; }
+    .diff-col li {
+      font-size: 14px; color: var(--muted);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .diff-col li:last-child { border-bottom: none; }
+    .diff-col li .dot-g { color: var(--green); }
+    .diff-col li .dot-r { color: var(--danger); }
+
+    /* ── ICP ──────────────────────────────────────────────── */
+    #icp { background: var(--bg2); }
+    .icp-box {
+      max-width: 680px; margin: 48px auto 0;
+      background: var(--card);
+      border: 1px solid rgba(59,130,246,.25);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .icp-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+    .icp-list { list-style: none; }
+    .icp-list li {
+      font-size: 15px; color: var(--text);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .icp-list li:last-child { border-bottom: none; }
+    .check { color: var(--green); font-size: 18px; }
+    .icp-warning {
+      margin-top: 24px;
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-size: 14px; color: var(--muted);
+      display: flex; gap: 10px;
+    }
+
+    /* ── OBJECTION ────────────────────────────────────────── */
+    #objection { background: var(--bg); }
+    .objection-questions {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 48px;
+    }
+    .objection-answer { margin-top: 16px; }
+    @media (max-width: 768px) { .objection-questions { grid-template-columns: 1fr; } }
+    .obj-q {
+      background: rgba(239,68,68,.06);
+      border: 1px solid rgba(239,68,68,.18);
+      border-radius: 14px;
+      padding: 32px;
+    }
+    .obj-q h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--danger); }
+    .obj-q p  { font-size: 15px; color: var(--muted); }
+    .obj-a {
+      background: rgba(34,197,94,.05);
+      border: 1px solid rgba(34,197,94,.18);
+      border-radius: 14px;
+      padding: 32px;
+    }
+    .obj-a { text-align: center; }
+    .obj-a h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--green); }
+    .obj-a ul { list-style: none; display: inline-block; text-align: left; }
+    .obj-a li {
+      font-size: 14px; color: var(--muted);
+      padding: 8px 0;
+      display: flex; gap: 10px;
+    }
+
+    /* ── LEAD MAGNET ──────────────────────────────────────── */
+    #audit { background: var(--bg2); }
+    .audit-card {
+      max-width: 700px; margin: 0 auto;
+      background: linear-gradient(135deg, rgba(59,130,246,.12) 0%, rgba(99,102,241,.08) 100%);
+      border: 1px solid rgba(59,130,246,.3);
+      border-radius: 20px;
+      padding: 56px 48px;
+      text-align: center;
+    }
+    .audit-card h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+    .audit-card p { font-size: 16px; color: var(--muted); margin-bottom: 36px; }
+    .audit-perks {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 36px;
+    }
+    .perk {
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 13px; font-weight: 600;
+      display: flex; gap: 6px; align-items: center;
+    }
+
+    /* ── FORM ─────────────────────────────────────────────── */
+    .form-group {
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    }
+    .form-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 15px;
+      color: var(--text);
+      width: 280px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--muted); }
+    .form-note {
+      margin-top: 14px;
+      font-size: 12px; color: var(--muted);
+    }
+
+    /* ── CTA BANNER ───────────────────────────────────────── */
+    #cta {
+      background: var(--bg);
+      text-align: center;
+      padding: 96px 0;
+    }
+    #cta h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      margin-bottom: 16px;
+    }
+    #cta p { font-size: 17px; color: var(--muted); margin-bottom: 36px; }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-weight: 700; font-size: 15px; }
+    .footer-copy { font-size: 13px; color: var(--muted); }
+
+    /* ── Section headers ──────────────────────────────────── */
+    .section-header { text-align: center; margin-bottom: 0; }
+    .section-header h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      margin-top: 12px;
+      margin-bottom: 16px;
+    }
+    .section-header p {
+      font-size: 16px; color: var(--muted);
+      max-width: 560px; margin: 0 auto;
+    }
+
+    /* ── Stat bar ─────────────────────────────────────────── */
+    .stat-bar {
+      display: flex; gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 64px;
+    }
+    .stat {
+      flex: 1; padding: 32px 24px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat .value {
+      font-size: 2.2rem; font-weight: 800; color: var(--accent2);
+      letter-spacing: -.03em;
+    }
+    .stat .desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    @media (max-width: 768px) {
+      .pain-grid          { grid-template-columns: repeat(2, 1fr); }
+      .steps              { grid-template-columns: 1fr; }
+      .features-grid      { grid-template-columns: 1fr; }
+      .dash-kpis          { grid-template-columns: repeat(2, 1fr); }
+      .dash-channels      { grid-template-columns: repeat(2, 1fr); }
+      .audit-card         { padding: 36px 24px; }
+      .form-input         { width: 100%; }
+    }
+
+    @media (max-width: 640px) {
+      .stat-bar           { flex-direction: column; border-radius: 12px; }
+      .stat               { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat:last-child    { border-bottom: none; }
+      .nav-links          { display: none; }
+      h1                  { font-size: 2rem; }
+      .pain-grid          { grid-template-columns: 1fr; }
+      .diff-inner         { grid-template-columns: 1fr; }
+      .dash-kpis          { grid-template-columns: 1fr; }
+      .dash-channels      { grid-template-columns: 1fr; }
+      .funnel             { gap: 8px; }
+      .funnel-sources     { gap: 6px; }
+      .funnel-box         { padding: 8px 10px; }
+      .section            { padding: 64px 0; }
+      .icp-box            { padding: 28px 20px; }
+      .audit-card         { padding: 28px 16px; }
+    }
+
+    /* ── Dashboard mockup ─────────────────────────────────── */
+    .dashboard {
+      margin-top: 72px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .dash-bar {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dash-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dash-dot.r { background: #ff5f57; }
+    .dash-dot.y { background: #febc2e; }
+    .dash-dot.g { background: #28c840; }
+    .dash-title { margin-left: 8px; font-size: 13px; color: var(--muted); font-weight: 500; }
+    .dash-body { padding: 28px; }
+    .dash-kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px; margin-bottom: 24px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .kpi .kpi-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .kpi .kpi-val   { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+    .kpi .kpi-delta { font-size: 12px; margin-top: 4px; }
+    .kpi .kpi-delta.up   { color: var(--green); }
+    .kpi .kpi-delta.down { color: var(--danger); }
+    .dash-channels {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .channel-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .channel-card .ch-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px;
+    }
+    .channel-name { font-size: 13px; font-weight: 700; }
+    .ch-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 100px;
+      background: rgba(34,197,94,.15); color: var(--green);
+    }
+    .ch-badge.warn { background: rgba(245,158,11,.12); color: var(--yellow); }
+    .ch-row {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: var(--muted);
+      padding: 5px 0; border-bottom: 1px solid var(--border);
+    }
+    .ch-row:last-child { border-bottom: none; }
+    .ch-row .val { color: var(--text); font-weight: 600; }
+
+    /* Reconcile indicator */
+    .recon-bar {
+      margin-top: 24px;
+      background: var(--card);
+      border: 1px solid rgba(34,197,94,.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px;
+    }
+    .recon-bar .dot-live {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 8px var(--green);
+      flex-shrink: 0;
+    }
+    .recon-bar span { color: var(--muted); }
+    .recon-bar strong { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────────── NAV ─────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="dot"></div>
+      Agyle Recon
+    </div>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#icp">Who It's For</a>
+      <a href="#audit">Free Audit</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌙</button>
+      <button class="nav-cta" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
+        Book a Demo
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────── HERO ─────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      Now live — Shopify · Shopee · Lazada · TikTok
+    </div>
+
+    <h1>Your numbers don't match.<br><span class="red">We fix that.</span></h1>
+    <p class="hero-sub">
+      One source of truth for your eCommerce revenue. Upload your platform exports — we reconcile, clean, and deliver a unified dashboard in minutes.
+    </p>
+
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
+        Get My Free Profit Audit
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+        See How It Works
+      </button>
+    </div>
+
+    <!-- Channel funnel: many → one -->
+    <div class="funnel">
+      <!-- Source channels -->
+      <div class="funnel-sources">
+        <div class="funnel-box">
+          <img class="logo" src="https://cdn.simpleicons.org/shopify/96BF48" alt="Shopify" />
+          <span class="name">Shopify</span>
+        </div>
+        <div class="funnel-box">
+          <img class="logo" src="https://cdn.simpleicons.org/shopee/EE4D2D" alt="Shopee" />
+          <span class="name">Shopee</span>
+        </div>
+        <div class="funnel-box">
+          <span class="lazada-wrap lg"><img src="Laz_Logo-removebg-preview.png" alt="Lazada" /></span>
+          <span class="name">Lazada</span>
+        </div>
+        <div class="funnel-box">
+          <img class="logo" src="https://cdn.simpleicons.org/tiktok/EE1D52" alt="TikTok" />
+          <span class="name">TikTok</span>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="funnel-arrow">→</div>
+
+      <!-- Single output -->
+      <div class="funnel-output">
+        <div class="icon">📊</div>
+        <div class="name">One Consolidated Dashboard</div>
+      </div>
+    </div>
+
+    <!-- Stat bar -->
+    <div class="stat-bar">
+      <div class="stat">
+        <div class="value">4</div>
+        <div class="desc">Platforms unified</div>
+      </div>
+      <div class="stat">
+        <div class="value">0</div>
+        <div class="desc">Integrations needed</div>
+      </div>
+      <div class="stat">
+        <div class="value">₱1M+</div>
+        <div class="desc">Monthly revenue served</div>
+      </div>
+      <div class="stat">
+        <div class="value">100%</div>
+        <div class="desc">Export-based — no API keys</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── DASHBOARD MOCKUP ─────────────────── -->
+<section class="section" id="dashboard" style="background: var(--bg2); padding-top: 0;">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Live Dashboard</div>
+      <h2>All your channels.<br>One command center.</h2>
+      <p>Real-time reconciled view across every platform you sell on.</p>
+    </div>
+
+    <div class="dashboard">
+      <div class="dash-bar">
+        <div class="dash-dot r"></div>
+        <div class="dash-dot y"></div>
+        <div class="dash-dot g"></div>
+        <span class="dash-title">Agyle Recon — March 2025 Report</span>
+      </div>
+      <div class="dash-body">
+        <!-- KPIs -->
+        <div class="dash-kpis">
+          <div class="kpi">
+            <div class="kpi-label">Total Revenue</div>
+            <div class="kpi-val">₱4.2M</div>
+            <div class="kpi-delta up">↑ 12.4% vs last month</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Net Orders</div>
+            <div class="kpi-val">3,841</div>
+            <div class="kpi-delta up">↑ 8.1%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Returns &amp; Cancels</div>
+            <div class="kpi-val">214</div>
+            <div class="kpi-delta down">↓ 5.6%</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Reconciled Margin</div>
+            <div class="kpi-val">34.2%</div>
+            <div class="kpi-delta up">↑ 2.1pts</div>
+          </div>
+        </div>
+
+        <!-- Per-channel breakdown -->
+        <div class="dash-channels">
+          <div class="channel-card">
+            <div class="ch-header">
+              <span class="channel-name"><img src="https://cdn.simpleicons.org/shopify/96BF48" alt="Shopify"> Shopify</span>
+              <span class="ch-badge">Healthy</span>
+            </div>
+            <div class="ch-row"><span>Revenue</span><span class="val">₱1,840,000</span></div>
+            <div class="ch-row"><span>Orders</span><span class="val">1,204</span></div>
+            <div class="ch-row"><span>Avg. Order</span><span class="val">₱1,528</span></div>
+            <div class="ch-row"><span>Returns</span><span class="val">42</span></div>
+          </div>
+          <div class="channel-card">
+            <div class="ch-header">
+              <span class="channel-name"><img src="https://cdn.simpleicons.org/shopee/EE4D2D" alt="Shopee"> Shopee</span>
+              <span class="ch-badge warn">Review</span>
+            </div>
+            <div class="ch-row"><span>Revenue</span><span class="val">₱1,210,000</span></div>
+            <div class="ch-row"><span>Orders</span><span class="val">1,630</span></div>
+            <div class="ch-row"><span>Avg. Order</span><span class="val">₱742</span></div>
+            <div class="ch-row"><span>Returns</span><span class="val">118</span></div>
+          </div>
+          <div class="channel-card">
+            <div class="ch-header">
+              <span class="channel-name"><span class="lazada-wrap sm"><img src="Laz_Logo-removebg-preview.png" alt="Lazada" /></span> Lazada</span>
+              <span class="ch-badge">Healthy</span>
+            </div>
+            <div class="ch-row"><span>Revenue</span><span class="val">₱780,000</span></div>
+            <div class="ch-row"><span>Orders</span><span class="val">692</span></div>
+            <div class="ch-row"><span>Avg. Order</span><span class="val">₱1,127</span></div>
+            <div class="ch-row"><span>Returns</span><span class="val">31</span></div>
+          </div>
+          <div class="channel-card">
+            <div class="ch-header">
+              <span class="channel-name"><img src="https://cdn.simpleicons.org/tiktok/EE1D52" alt="TikTok"> TikTok</span>
+              <span class="ch-badge">Healthy</span>
+            </div>
+            <div class="ch-row"><span>Revenue</span><span class="val">₱390,000</span></div>
+            <div class="ch-row"><span>Orders</span><span class="val">315</span></div>
+            <div class="ch-row"><span>Avg. Order</span><span class="val">₱1,238</span></div>
+            <div class="ch-row"><span>Returns</span><span class="val">23</span></div>
+          </div>
+        </div>
+
+        <div class="recon-bar">
+          <div class="dot-live"></div>
+          <div>
+            <strong>All data reconciled.</strong>
+            <span> Last sync: March 24, 2025 · Discrepancies detected: 0 · Data source: exports only — no API keys required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── PAIN ─────────────────── -->
+<section id="pain" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="label red">Sound Familiar?</div>
+      <h2>Multi-channel is powerful.<br>The data is a mess.</h2>
+      <p>If you're selling on more than one platform, you already know the headache.</p>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="icon">⚠️</div>
+        <h3>Numbers that don't match</h3>
+        <p>Your Shopify says one thing. Shopee says another. Your bank account says something else entirely. Which one do you trust?</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon">📋</div>
+        <h3>Endless spreadsheet work</h3>
+        <p>Every month: export, paste, clean, combine, reformat, repeat. Hours lost before you even start analyzing.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon">🌫️</div>
+        <h3>No unified view</h3>
+        <p>Your data lives in four different platforms, four different formats. There's no single place to see the full picture.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon">💸</div>
+        <h3>Margin pressure is real</h3>
+        <p>When margins tighten, guesswork gets expensive. Cutting blindly without clean data is how profitable brands lose money fast.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon">🐌</div>
+        <h3>Slow, reactive decisions</h3>
+        <p>By the time you clean the data and understand what happened last month, it's already too late to act on it.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon">🎯</div>
+        <h3>Dirty data, costly mistakes</h3>
+        <p>You're making scaling, ad spend, and inventory decisions on numbers you're not even sure are right. That's the real risk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── HOW IT WORKS ─────────────────── -->
+<section id="how" class="section" style="background: var(--bg);">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Simple Process</div>
+      <h2>No integrations. No setup headaches.<br>Just clarity.</h2>
+      <p>Upload your exports — we handle everything else.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <span class="icon">📤</span>
+        <h3>Export your data</h3>
+        <p>Download your order exports from Shopify, Shopee, Lazada, and TikTok — exactly like you do today. No API keys, no integrations, no setup.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <span class="icon">⚙️</span>
+        <h3>We reconcile &amp; clean</h3>
+        <p>Agyle Recon standardizes every format, reconciles discrepancies across channels, removes duplicates, and builds a single source of truth.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <span class="icon">📊</span>
+        <h3>Get decision-ready reports</h3>
+        <p>A unified visual dashboard shows you real revenue, real margins, and real performance — broken down by channel, SKU, and period. Act with confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── FEATURES ─────────────────── -->
+<section id="features" class="section" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">What We Fix</div>
+      <h2>Everything your spreadsheets<br>can't handle at scale.</h2>
+      <p>Built specifically for multi-channel Philippine eCommerce brands doing serious volume.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">🔗</div>
+        <div>
+          <h3>Cross-platform reconciliation</h3>
+          <p>Conflicting numbers across Shopify, Shopee, Lazada, and TikTok are automatically matched, flagged, and resolved into one true number.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧹</div>
+        <div>
+          <h3>Automatic data standardization</h3>
+          <p>Every platform has its own export format. We normalize all of them so your data speaks the same language regardless of the source.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📈</div>
+        <div>
+          <h3>Visual unified dashboard</h3>
+          <p>Revenue, orders, returns, margins, and channel performance — all in one interactive view. No more switching between tabs and reports.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <div>
+          <h3>Real margin visibility</h3>
+          <p>See your actual profitability per channel, per SKU. Know exactly where you're winning and where you're quietly bleeding money.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <div>
+          <h3>Fast turnaround</h3>
+          <p>What used to take your team days of spreadsheet work is done in minutes. Spend your time on decisions, not data prep.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📉</div>
+        <div>
+          <h3>Returns &amp; cancellation tracking</h3>
+          <p>Understand your real net revenue. Returns and cancellations are broken out per channel so you know where your leaks are.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔁</div>
+        <div>
+          <h3>Repeatable monthly reporting</h3>
+          <p>Build a consistent reporting rhythm that scales with your growth. Same format, same logic — every single month, automatically.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🚫</div>
+        <div>
+          <h3>Zero integration required</h3>
+          <p>No API credentials. No developer needed. No platform permissions. Just export and upload — you're already halfway there.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── DIFFERENTIATOR ─────────────────── -->
+<section id="diff" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Why Agyle Recon</div>
+      <h2>Most tools make you do the work.<br>We do it for you.</h2>
+      <p>Most analytics platforms require integrations, developer time, and still give you siloed data. We're different by design.</p>
+    </div>
+
+    <div class="diff-inner">
+      <div class="diff-col bad">
+        <h3><span style="color:var(--danger)">✗</span> Other tools</h3>
+        <ul>
+          <li><span class="dot-r">✗</span> Require API integrations and credentials</li>
+          <li><span class="dot-r">✗</span> Need developer setup time</li>
+          <li><span class="dot-r">✗</span> Show siloed, per-platform data</li>
+          <li><span class="dot-r">✗</span> Don't standardize across channels</li>
+          <li><span class="dot-r">✗</span> Monthly subscriptions for features you barely use</li>
+          <li><span class="dot-r">✗</span> Generic dashboards not built for PH eCommerce</li>
+        </ul>
+      </div>
+      <div class="diff-col good">
+        <h3><span style="color:var(--green)">✓</span> Agyle Recon</h3>
+        <ul>
+          <li><span class="dot-g">✓</span> Works from plain export files — no credentials needed</li>
+          <li><span class="dot-g">✓</span> Zero setup — upload and go</li>
+          <li><span class="dot-g">✓</span> Combines all channels into one unified view</li>
+          <li><span class="dot-g">✓</span> Auto-standardizes every platform's format</li>
+          <li><span class="dot-g">✓</span> Built specifically for multi-channel eCommerce brands</li>
+          <li><span class="dot-g">✓</span> Decision-ready reports — not just pretty charts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── ICP ─────────────────── -->
+<section id="icp" class="section" style="background: var(--bg2);">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Who It's For</div>
+      <h2>Built for brands doing serious volume.</h2>
+      <p>Agyle Recon is purpose-built for eCommerce operators who can't afford to make decisions on dirty data.</p>
+    </div>
+
+    <div class="icp-box">
+      <h3>You're a fit if...</h3>
+      <ul class="icp-list">
+        <li><span class="check">✓</span> Your brand does ₱1M+ per month in combined eCommerce revenue</li>
+        <li><span class="check">✓</span> You're selling on at least 2 platforms (e.g., Shopify + Shopee, Lazada + TikTok)</li>
+        <li><span class="check">✓</span> You or your team spend hours every month cleaning and combining export data</li>
+        <li><span class="check">✓</span> You're running Meta or TikTok ads and need accurate ROAS by channel</li>
+        <li><span class="check">✓</span> You feel margin pressure and need to find where you're losing money</li>
+        <li><span class="check">✓</span> You make inventory, ad spend, or pricing decisions — and you need them to be right</li>
+      </ul>
+      <div class="icp-warning">
+        <span>⚠️</span>
+        <span>Agyle Recon is optimized for high-volume brands. If you're doing under ₱500k/month, we may not be the right fit yet — and we'll tell you upfront.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── OBJECTION ─────────────────── -->
+<section id="objection" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="label">Honest Answers</div>
+      <h2>You're probably wondering...</h2>
+    </div>
+
+    <!-- Questions first -->
+    <div class="objection-questions">
+      <div class="obj-q">
+        <h3>"Why not just do this in Excel?"</h3>
+        <p>You could. Most brands start there. But at ₱1M+/month across four platforms, Excel becomes a liability — not a tool.</p>
+      </div>
+      <div class="obj-q">
+        <h3>"What if I only sell on one platform right now?"</h3>
+        <p>Start with one. As you expand to Shopee, Lazada, or TikTok, your reporting infrastructure is already in place. No rebuilding later.</p>
+      </div>
+      <div class="obj-q">
+        <h3>"Is my data safe?"</h3>
+        <p>Your exports are processed securely and never shared. We work with files you already have — no platform access, no stored credentials, no risk.</p>
+      </div>
+    </div>
+
+    <!-- Answer below -->
+    <div class="objection-answer">
+      <div class="obj-a">
+        <h3>Here's why Agyle Recon wins</h3>
+        <ul>
+          <li><span class="dot-g">✓</span> <span>Cross-platform standardization Excel can't do automatically</span></li>
+          <li><span class="dot-g">✓</span> <span>10x faster than manual copy-paste every month</span></li>
+          <li><span class="dot-g">✓</span> <span>Zero human error in reconciliation logic</span></li>
+          <li><span class="dot-g">✓</span> <span>Consistent, repeatable — same format every time</span></li>
+          <li><span class="dot-g">✓</span> <span>Scales as you add channels or SKUs</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── LEAD MAGNET ─────────────────── -->
+<section id="audit" class="section" style="background: var(--bg2);">
+  <div class="container">
+    <div class="audit-card">
+      <div class="label green" style="margin-bottom: 16px;">Free for ₱1M+ Brands</div>
+      <h2>Get Your Free eCommerce<br>Profit Diagnostic</h2>
+      <p>Send us your exports. We'll show you exactly where your numbers don't match, where your margins are leaking, and what it's actually costing you.</p>
+      <div class="audit-perks">
+        <div class="perk">✓ No commitment</div>
+        <div class="perk">✓ Results in 48 hrs</div>
+        <div class="perk">✓ ₱1M+/month brands only</div>
+        <div class="perk">✓ 100% confidential</div>
+      </div>
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <input class="form-input" type="text" placeholder="Your name" required />
+          <input class="form-input" type="email" placeholder="Work email" required />
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <input class="form-input" style="width:100%; max-width:578px;" type="text" placeholder="Brand name + monthly GMV (e.g. Brand X, ~₱2M/month)" required />
+        </div>
+        <div style="margin-top: 16px;">
+          <button type="submit" class="btn-primary" style="padding: 15px 36px; font-size: 16px;">
+            Claim My Free Profit Audit →
+          </button>
+        </div>
+        <p class="form-note">By submitting, you agree to be contacted by the Agyle team. No spam, ever.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── FINAL CTA ─────────────────── -->
+<section id="cta">
+  <div class="container">
+    <h2>When margins get tight,<br>guesswork gets expensive.</h2>
+    <p>Stop making decisions on dirty data. Get your numbers right — starting today.</p>
+    <div class="hero-ctas">
+      <button class="btn-primary" style="padding: 15px 32px; font-size: 16px;" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
+        Book a Demo
+      </button>
+      <button class="btn-ghost" style="padding: 15px 32px; font-size: 16px;" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">
+        Join the Waitlist
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────── FOOTER ─────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Agyle Recon</div>
+      <div class="footer-copy">© 2025 Agyle. Built for Philippine eCommerce operators.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = '✓ Submitted! We\'ll be in touch within 48 hours.';
+    btn.style.background = '#22c55e';
+    btn.disabled = true;
+    e.target.querySelectorAll('input').forEach(i => i.disabled = true);
+  }
+
+  // ── Theme toggle ──────────────────────────────────────────
+  const toggle = document.getElementById('themeToggle');
+  const html   = document.documentElement;
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      html.classList.add('light');
+      toggle.textContent = '☀️';
+    } else {
+      html.classList.remove('light');
+      toggle.textContent = '🌙';
+    }
+  }
+
+  // Load saved preference, default to dark
+  applyTheme(localStorage.getItem('theme') || 'dark');
+
+  toggle.addEventListener('click', () => {
+    const next = html.classList.contains('light') ? 'dark' : 'light';
+    localStorage.setItem('theme', next);
+    applyTheme(next);
+  });
+</script>
+
+</body>
+</html>
