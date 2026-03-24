@@ -621,8 +621,14 @@
       .pain-grid          { grid-template-columns: repeat(2, 1fr); }
       .steps              { grid-template-columns: 1fr; }
       .features-grid      { grid-template-columns: 1fr; }
-      .dash-body          { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .dash-inner         { min-width: 680px; }
+      .dash-kpis     { grid-template-columns: repeat(2, 1fr); }
+      .dash-channels { grid-template-columns: repeat(2, 1fr); }
+      .kpi .kpi-val  { font-size: 1.2rem; }
+      .kpi           { padding: 14px; }
+      .channel-card  { padding: 14px; }
+      .ch-row        { font-size: 11px; }
+      .channel-name  { font-size: 12px; }
+      .ch-badge      { font-size: 9px; }
       .audit-card         { padding: 36px 24px; }
       .form-input         { width: 100%; }
     }
@@ -859,7 +865,6 @@
         <span class="dash-title">Agyle Recon — March 2025 Report</span>
       </div>
       <div class="dash-body">
-        <div class="dash-inner">
         <!-- KPIs -->
         <div class="dash-kpis">
           <div class="kpi">
@@ -935,7 +940,6 @@
             <span> Last sync: March 24, 2025 · Discrepancies detected: 0 · Data source: exports only — no API keys required</span>
           </div>
         </div>
-        </div><!-- end dash-inner -->
       </div>
     </div>
   </div>
